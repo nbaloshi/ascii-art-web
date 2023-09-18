@@ -1,12 +1,10 @@
 package main
-
 import (
 	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
 )
-
 func CharConvert(arr []string, char rune, line int) string {
 	Ascii := (int(char)-32)*9 + line
 	if Ascii >= 0 && Ascii < len(arr) {
