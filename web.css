@@ -1,13 +1,27 @@
 body {
-  background-color: rgb(42, 218, 121);
+  font-family: Arial, sans-serif;
+  margin: 20px;
 }
 
 h1 {
-  color: rgb(112, 119, 48);
+  text-align: center;
 }
 
-.styled-box {
-  background-color: rgba(241, 12, 12, 0.596);
-  padding: 20px;
-  border: 1px solid rgb(45, 90, 94);
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type="text"], input[type="submit"], input[type="radio"] {
+  margin: 5px;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
 }
