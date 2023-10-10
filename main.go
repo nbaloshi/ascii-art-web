@@ -12,7 +12,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/generate", generateHandler)
+	http.HandleFunc("/ascii-art", generateHandler)
 
 	fmt.Println("Server started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
