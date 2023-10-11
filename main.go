@@ -14,6 +14,8 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", generateHandler)
 
+	http.HandleFunc("/web.css", cssHandler)
+
 	fmt.Println("Server started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
@@ -32,6 +34,10 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func cssHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web.css")
 }
 
 func generateHandler(w http.ResponseWriter, r *http.Request) {
