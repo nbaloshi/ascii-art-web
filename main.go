@@ -4,17 +4,19 @@ import (
 	"bufio"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 )
 
+type Art struct {
+	Result string
+}
+
 func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", generateHandler)
-
 	http.HandleFunc("/web.css", cssHandler)
 
 	fmt.Println("Server started on http://localhost:8080")
@@ -59,9 +61,22 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		asciiArt := GenerateASCIIArt(text, bannerType)
-		//asciiArt = `<textarea style=""white=space: pre;>` + asciiArt + ` </textarea>`
-		// Serve the ASCII art as the response
-		fmt.Fprint(w, asciiArt)
+		// Create an instance of Art struct to hold the ASCII art
+		art := Art{Result: asciiArt}
+
+		// tmpl, err := template.New("result").Parse(`{{.Result}}`)
+		tmpl, err := template.ParseFiles("web.html")
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		tmpl.Execute(w, &art)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -77,12 +92,6 @@ func GenerateASCIIArt(text string, bannerType string) string {
 	var bannerContent []string
 	var bannerFile string
 
-	bannerFile = bannerType + ".txt"
-	_, err := ioutil.ReadFile(bannerFile)
-	if err != nil {
-		return "Internal Server Error: Error 500"
-	}
-
 	switch bannerType {
 	case "standard":
 		bannerFile = "standard.txt"
@@ -94,7 +103,7 @@ func GenerateASCIIArt(text string, bannerType string) string {
 		bannerFile = "standard.txt"
 	}
 
-	bannerContent, err = readBannerFile(bannerFile)
+	bannerContent, err := readBannerFile(bannerFile)
 	if err != nil {
 		return fmt.Sprintf("Error reading %s file: %v", bannerFile, err)
 	}

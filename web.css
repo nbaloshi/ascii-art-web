@@ -25,14 +25,6 @@ textarea {
   align-items: center;
 }
 
-#result-frame {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 50%;
-  margin-left: 24%;
-}
-
 .banner {
   display: flex;
   justify-content: center;
@@ -44,4 +36,13 @@ textarea {
   justify-content: center;
   align-items: center;
   margin-top: 1%;
+}
+
+.output {
+  margin-bottom: 20px;
+  border-radius: 30px;
+  width: 1200px;
+  height: 500px;
+  resize: both;
+  white-space: pre;
 }

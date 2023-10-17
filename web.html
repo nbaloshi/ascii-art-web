@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ASCII Art Web</title>
     <link rel="stylesheet" type="text/css" href="web.css">
 </head>
+
 <body>
     <h1>ASCII Art Generator</h1>
     <form action="/ascii-art" method="post" target="result-frame">
         <textarea name="text" rows="5" cols="50" placeholder="Enter your text"></textarea>
         <br>
-        <div class="banner" >
-        <input class="standard" type="radio" name="bannerType" value="standard" checked> Standard
-        <input class="thinkertoy" type="radio" name="bannerType" value="thinkertoy"> Thinkertoy
-        <input class="shadow" type="radio" name="bannerType" value="shadow"> Shadow
-        <br>
+        <div class="banner">
+            <input class="standard" type="radio" name="bannerType" value="standard" checked> Standard
+            <input class="thinkertoy" type="radio" name="bannerType" value="thinkertoy"> Thinkertoy
+            <input class="shadow" type="radio" name="bannerType" value="shadow"> Shadow
+            <br>
         </div>
-        <div class="gen" >
+        <div class="gen">
             <input type="submit" value="Generate ASCII Art">
         </div>
     </form>
     <br>
+    <textarea id="output" class="output" disabled="true">{{ .Result }}</textarea>
 </body>
+
 </html>
