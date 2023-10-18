@@ -1,11 +1,12 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -17,6 +18,7 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/ascii-art", generateHandler)
 	http.HandleFunc("/web.css", cssHandler)
+	http.HandleFunc("/404", custom404Handler)
 
 	fmt.Println("Server started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -24,20 +26,28 @@ func main() {
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		if r.URL.Path != "/" {
+			http.Redirect(w, r, "/404", http.StatusNotFound)
+			return
+		}
+
 		// Serve the HTML file
 		tmpl, err := template.ParseFiles("web.html")
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Redirect(w, r, "/404", http.StatusNotFound)
 			return
 		}
 		err = tmpl.Execute(w, nil)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Redirect(w, r, "/404", http.StatusNotFound)
 			return
 		}
 	}
 }
 
+func custom404Handler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "error404.html")
+}
 func cssHandler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "web.css")
 }
@@ -55,7 +65,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		bannerType := r.Form.Get("bannerType")
 
 		if text == "" {
-			http.Error(w, "Bad Request: (error 400)", http.StatusBadRequest)
+			http.ServeFile(w, r, "error400.html")
 			return
 		}
 
@@ -128,11 +138,21 @@ func GenerateASCIIArt(text string, bannerType string) string {
 }
 
 func readBannerFile(filename string) ([]string, error) {
-	fileContent, err := ioutil.ReadFile(filename)
+	file, err := os.Open(filename)
 	if err != nil {
 		return nil, err
 	}
+	defer file.Close()
 
-	lines := strings.Split(string(fileContent), "\n")
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if scanner.Err() != nil {
+		return nil, scanner.Err()
+	}
+
 	return lines, nil
 }
