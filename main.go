@@ -1,12 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 )
 
@@ -54,7 +53,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func CharConvert(arr []string, char rune, line int) string {
-	ascii := (int(char) - 32) * 9 + line
+	ascii := (int(char)-32)*9 + line
 	if ascii >= 0 && ascii < len(arr) {
 		return arr[ascii]
 	}
@@ -102,21 +101,11 @@ func GenerateASCIIArt(text string, bannerType string) string {
 }
 
 func readBannerFile(filename string) ([]string, error) {
-	file, err := os.Open(filename)
+	fileContent, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
 
-	var lines []string
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		lines = append(lines, scanner.Text())
-	}
-
-	if scanner.Err() != nil {
-		return nil, scanner.Err()
-	}
-
+	lines := strings.Split(string(fileContent), "\n")
 	return lines, nil
 }
