@@ -1,27 +1,48 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  background-color: darkcyan;
 }
 
 h1 {
   text-align: center;
+  background-color: rgb(130, 197, 146);
+  height: 100px;
+  font-size: 50px;
+  height: 50%;
+  width: 70%;
+  margin-left: 14.5%
 }
 
 textarea {
-  width: 100%;
-  padding: 10px;
+  width: 50%;
+  height: 50%;
   font-size: 16px;
+  text-align: center;
+  margin-left: 24%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-input[type="text"], input[type="submit"], input[type="radio"] {
-  margin: 5px;
-  padding: 5px 10px;
-  font-size: 16px;
+.banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#result {
-  margin-top: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+.gen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+}
+
+.output {
+  margin-bottom: 20px;
+  border-radius: 30px;
+  width: 1200px;
+  height: 500px;
+  resize: both;
+  white-space: pre;
 }

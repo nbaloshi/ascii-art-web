@@ -9,9 +9,14 @@ import (
 	"strings"
 )
 
+type Art struct {
+	Result string
+}
+
 func main() {
 	http.HandleFunc("/", homeHandler)
-	http.HandleFunc("/generate", generateHandler)
+	http.HandleFunc("/ascii-art", generateHandler)
+	http.HandleFunc("/web.css", cssHandler)
 
 	fmt.Println("Server started on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", nil))
@@ -33,6 +38,10 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func cssHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "web.css")
+}
+
 func generateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		err := r.ParseForm()
@@ -45,10 +54,28 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		text = strings.TrimSpace(text)
 		bannerType := r.Form.Get("bannerType")
 
-		asciiArt := GenerateASCIIArt(text, bannerType)
+		if text == "" {
+			http.Error(w, "Bad Request: (error 400)", http.StatusBadRequest)
+			return
+		}
 
-		// Serve the ASCII art as the response
-		fmt.Fprint(w, asciiArt)
+		asciiArt := GenerateASCIIArt(text, bannerType)
+		// Create an instance of Art struct to hold the ASCII art
+		art := Art{Result: asciiArt}
+
+		// tmpl, err := template.New("result").Parse(`{{.Result}}`)
+		tmpl, err := template.ParseFiles("web.html")
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		tmpl.Execute(w, &art)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
