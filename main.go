@@ -65,7 +65,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		text = strings.TrimSpace(text)
 		bannerType := r.Form.Get("bannerType")
 
-		if text == "" || text >= string(32) || text <= string(128) {
+		if text == "" || text <= string(32) || text >= string(128) {
 			http.ServeFile(w, r, "error400.html")
 			return
 		}
@@ -88,8 +88,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
-		http.Redirect(w, r, "/404", http.StatusNotFound)
-			return
+		http.Error(w, "405", http.StatusMethodNotAllowed)
 	}
 }
 
