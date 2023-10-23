@@ -28,7 +28,8 @@ func main() {
 func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		if r.URL.Path != "/" {
-			http.Redirect(w, r, "/404", http.StatusNotFound)
+			// http.Redirect(w, r, "/404", http.StatusNotFound)
+			http.ServeFile(w, r, "error404.html")
 			return
 		}
 
