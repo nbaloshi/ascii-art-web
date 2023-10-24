@@ -67,7 +67,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		bannerType := r.Form.Get("bannerType")
 
 		if text == "" || text <= string(32) || text >= string(128) {
-			http.ServeFile(w, r, "error400.html")
+			http.ServeFile(w, r, "error4 00.html")
 			return
 		}
 
@@ -89,7 +89,9 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	} else {
-		http.Error(w, "405", http.StatusMethodNotAllowed)
+		//http.Error(w, "405", http.StatusMethodNotAllowed)
+		http.ServeFile(w, r, "error405.html")
+		return
 	}
 }
 
@@ -165,3 +167,11 @@ func readBannerFile(filename string) ([]string, error) {
 
 	return lines, nil
 }
+
+
+
+
+
+
+
+// alya
