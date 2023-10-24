@@ -29,6 +29,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		if r.URL.Path != "/" {
 			// http.Redirect(w, r, "/404", http.StatusNotFound)
+			w.WriteHeader(404)
 			http.ServeFile(w, r, "error404.html")
 			return
 		}
@@ -67,7 +68,8 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		bannerType := r.Form.Get("bannerType")
 
 		if text == "" || text <= string(32) || text >= string(128) {
-			http.ServeFile(w, r, "error4 00.html")
+			w.WriteHeader(400)
+			http.ServeFile(w, r, "error400.html")
 			return
 		}
 
@@ -90,6 +92,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		//http.Error(w, "405", http.StatusMethodNotAllowed)
+		w.WriteHeader(405)
 		http.ServeFile(w, r, "error405.html")
 		return
 	}
@@ -167,11 +170,3 @@ func readBannerFile(filename string) ([]string, error) {
 
 	return lines, nil
 }
-
-
-
-
-
-
-
-// alya
