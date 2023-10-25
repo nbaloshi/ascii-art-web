@@ -73,7 +73,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		asciiArt := GenerateASCIIArt(text, bannerType)
+		asciiArt := GenerateASCIIArt(text, bannerType,w)
 		// Create an instance of Art struct to hold the ASCII art
 		art := Art{Result: asciiArt}
 
@@ -106,14 +106,16 @@ func CharConvert(arr []string, char rune, line int) string {
 	return ""
 }
 
-func GenerateASCIIArt(text string, bannerType string) string {
+func GenerateASCIIArt(text string, bannerType string, w http.ResponseWriter) string {
 	var bannerContent []string
 	var bannerFile string
 
 	bannerFile = bannerType + ".txt"
 	_, err := ioutil.ReadFile(bannerFile)
 	if err != nil {
+		w.WriteHeader(500)
 		return "Internal Server Error: Error 500"
+
 	}
 
 	switch bannerType {
