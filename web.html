@@ -19,10 +19,26 @@
         </div>
         <div class="gen">
             <input type="submit" value="Generate ASCII Art">
+            <button type="button" onclick="download()">Export</button>
         </div>
     </form>
     <br>
     <textarea id="output" class="output" disabled="true">{{ .Result }}</textarea>
 </body>
+<script>
+    function download() {
+        const outputElement = document.getElementById('output');
+        const output = outputElement.textContent;
+        if (output === "") {
+            return;
+        }
+        const blob = new Blob([output], { type: "text/plain" });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'asciiArtWeb.txt';
+        a.click();
+    }
+</script>
 
 </html>

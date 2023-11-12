@@ -73,7 +73,7 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		asciiArt := GenerateASCIIArt(text, bannerType,w)
+		asciiArt := GenerateASCIIArt(text, bannerType, w)
 		// Create an instance of Art struct to hold the ASCII art
 		art := Art{Result: asciiArt}
 
